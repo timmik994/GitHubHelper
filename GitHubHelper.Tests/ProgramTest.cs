@@ -1,7 +1,7 @@
-﻿using Xunit;
-
-namespace GitHubHelper.Tests
+﻿namespace GitHubHelper.Tests
 {
+    using Xunit;
+
     /// <summary>
     /// Tests for the methods in Program class
     /// </summary>

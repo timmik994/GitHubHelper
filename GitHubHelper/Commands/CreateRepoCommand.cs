@@ -1,9 +1,9 @@
-﻿using System;
-using GitHubClient;
-using GitHubClient.Model;
-
-namespace GitHubHelper.Commands
+﻿namespace GitHubHelper.Commands
 {
+    using System;
+    using GitHubClient;
+    using GitHubClient.Model;
+
     /// <summary>
     /// The actions to create repository.
     /// </summary>
@@ -28,7 +28,7 @@ namespace GitHubHelper.Commands
             string repositoryName = Console.ReadLine();
             Console.WriteLine("Description:");
             string repositoryDescription = Console.ReadLine();
-            repositoryData=new CreateRepositoryModel(repositoryName, repositoryDescription);
+            this.repositoryData = new CreateRepositoryModel(repositoryName, repositoryDescription);
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace GitHubHelper.Commands
         public override void RunCommand()
         {
             GitHubApiClient gitHubClient = GitHubApiClient.GetInstance();
-            this.responce = gitHubClient.CreateRepository(repositoryData);
+            this.responce = gitHubClient.CreateRepository(this.repositoryData);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace GitHubHelper.Commands
         /// </summary>
         public override void ShowResult()
         {
-           Console.WriteLine(responce);
+           Console.WriteLine(this.responce);
         }
     }
 }

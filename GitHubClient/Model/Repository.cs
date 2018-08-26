@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GitHubClient.Model
+﻿namespace GitHubClient.Model
 {
     /// <summary>
     /// This class represents repository from github.

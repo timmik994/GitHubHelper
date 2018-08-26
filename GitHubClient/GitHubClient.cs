@@ -67,7 +67,7 @@
             HttpClient client = new HttpClient();
             HttpRequestMessage request = new HttpRequestMessage();
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.accessToken);
-            request.Headers.Add("User-Agent","c#App");
+            request.Headers.Add("User-Agent", "c#App");
             request.RequestUri = new Uri($"{baseUrl}user/repos");
             request.Method = HttpMethod.Post;
             string repoJson = JsonConvert.SerializeObject(repositoryModel);
@@ -78,7 +78,7 @@
             switch (responce.StatusCode)
             {
                 case HttpStatusCode.Created: return "Repository created";
-                default : return "Repositoty creation failed";
+                default: return "Repositoty creation failed";
             }
         }
     }

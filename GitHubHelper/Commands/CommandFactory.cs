@@ -18,7 +18,7 @@
         {
             switch (command)
             {
-                case "create": return  new CreateRepoCommand();
+                case "create": return new CreateRepoCommand();
                 default: return null;
             }
         }

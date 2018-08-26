@@ -1,8 +1,7 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
-namespace GitHubClient.Model
+﻿namespace GitHubClient.Model
 {
+    using Newtonsoft.Json;
+
     /// <summary>
     /// The data needed for create repository.
     /// </summary>
