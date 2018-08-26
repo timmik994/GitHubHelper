@@ -18,5 +18,17 @@
             Assert.NotEmpty(helpString);
             Assert.StartsWith("help", helpString);
         }
+
+        /// <summary>
+        /// This test tests the creation of command process.
+        /// </summary>
+        [Fact]
+        public void TestGetCommand()
+        {
+            AbstractCommand commandInstance = CommandFactory.GetCommand("create");
+            Assert.IsType<CreateRepoCommand>(commandInstance);
+            commandInstance = CommandFactory.GetCommand("unusedword");
+            Assert.Null(commandInstance);
+        }
     }
 }

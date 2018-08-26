@@ -10,38 +10,65 @@
     public class Program
     {
         /// <summary>
+        /// Const string to write between commands.
+        /// </summary>
+        private const string DelimeterMessage = "-----------------------------------------------------";
+
+        /// <summary>
         /// The main method.
         /// </summary>
         /// <param name="args">String of arguments.</param>
         public static void Main(string[] args)
         {
             Console.WriteLine(CommandFactory.GetHelp());
-            Console.WriteLine("-----------------------------------------------------");
+            Console.WriteLine(Program.DelimeterMessage);
             Console.WriteLine("Please enter access token");
             string token = Console.ReadLine();
             GitHubApiClient gitHubClient = GitHubApiClient.GetInstance();
             gitHubClient.SetAccessToken(token);
-            while (true)
+            bool running = true;
+            while (running)
             {
-                Console.WriteLine("--------------------------", ConsoleColor.DarkYellow);
+                Console.WriteLine(Program.DelimeterMessage);
+                Console.Write(">>>");
                 string command = Console.ReadLine();
+                running = ProcessCommand(command);
+            }
+        }
 
-                if (command == "exit")
-                {
-                    break;
-                }
+        /// <summary>
+        /// Processes the command.
+        /// </summary>
+        /// <param name="command">The command from user.</param>
+        /// <returns>The false if nedeed to stop application. Otherwise true.</returns>
+        public static bool ProcessCommand(string command)
+        {
+            if (command == "exit")
+            {
+                return false;
+            }
 
-                if (command == "help")
-                {
-                    Console.WriteLine(CommandFactory.GetHelp());
-                    continue;
-                }
+            if (command == "help")
+            {
+                Console.WriteLine(Program.DelimeterMessage);
+                Console.WriteLine(CommandFactory.GetHelp());
+                return true;
+            }
 
-                AbstractCommand commandInstance = CommandFactory.GetCommand(command);
+            AbstractCommand commandInstance = CommandFactory.GetCommand(command);
+            if (commandInstance != null)
+            {
                 commandInstance.GetParameters();
                 commandInstance.RunCommand();
                 commandInstance.ShowResult();
             }
+            else
+            {
+                Console.WriteLine($"Command '{command}' is invalid. Please see help.");
+                Console.WriteLine(CommandFactory.GetHelp());
+            }
+
+            return true;
         }
     }
 }

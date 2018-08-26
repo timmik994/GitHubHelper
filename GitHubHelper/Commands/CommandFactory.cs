@@ -16,7 +16,11 @@
         /// <returns>Instance of the Command.</returns>
         public static AbstractCommand GetCommand(string command)
         {
-            return null;
+            switch (command)
+            {
+                case "create": return  new CreateRepoCommand();
+                default: return null;
+            }
         }
 
         /// <summary>
@@ -27,6 +31,7 @@
         {
             StringBuilder helpMessage = new StringBuilder();
             helpMessage.AppendLine("help: returns help.");
+            helpMessage.AppendLine("create: creates the repository");
             helpMessage.AppendLine("exit: Exit from application.");
             return helpMessage.ToString();
         }
