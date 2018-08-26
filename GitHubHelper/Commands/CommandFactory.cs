@@ -26,7 +26,8 @@
         public static string GetHelp()
         {
             StringBuilder helpMessage = new StringBuilder();
-            helpMessage.AppendLine("help: returns help");
+            helpMessage.AppendLine("help: returns help.");
+            helpMessage.AppendLine("exit: Exit from application.");
             return helpMessage.ToString();
         }
     }
