@@ -19,6 +19,7 @@
             switch (command)
             {
                 case "create": return new CreateRepoCommand();
+                case "getusrrepos": return new UserReposCommand();
                 default: return null;
             }
         }
@@ -30,9 +31,10 @@
         public static string GetHelp()
         {
             StringBuilder helpMessage = new StringBuilder();
-            helpMessage.AppendLine("help: returns help.");
+            helpMessage.AppendLine("help: show help message.");
             helpMessage.AppendLine("create: creates the repository");
-            helpMessage.AppendLine("exit: Exit from application.");
+            helpMessage.AppendLine("getusrrepos: gets repos for cpecified user");
+            helpMessage.AppendLine("exit: exit from application.");
             return helpMessage.ToString();
         }
     }

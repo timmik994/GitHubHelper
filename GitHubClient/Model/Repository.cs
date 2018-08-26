@@ -1,23 +1,43 @@
 ﻿namespace GitHubClient.Model
 {
+    using Newtonsoft.Json;
+
     /// <summary>
     /// This class represents repository from github.
     /// </summary>
     public class Repository
     {
         /// <summary>
-        /// The author of the repository.
+        /// Gets or sets author of the repository.
         /// </summary>
-        public string Author { get; set; }
+        [JsonProperty("owner")]
+        public User Owner { get; set; }
 
         /// <summary>
-        /// The name of repository.
+        /// Gets or sets name of repository.
         /// </summary>
+        [JsonProperty("name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// The date when repository was created.
+        /// Gets or sets date when repository was created.
         /// </summary>
-        public  string CreatedAt { get; set; }
+        [JsonProperty("created_at")]
+        public string CreatedAt { get; set; }
+
+        /// <summary>
+        /// Gets or sets repository description.
+        /// </summary>
+        [JsonProperty("description")]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// Get string representation of the class.
+        /// </summary>
+        /// <returns>String representation of class data.</returns>
+        public override string ToString()
+        {
+            return $"{this.Name}  {this.Owner}  {this.CreatedAt}  {this.Description}";
+        }
     }
 }

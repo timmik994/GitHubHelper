@@ -8,7 +8,7 @@
     public class CreateRepositoryModel
     {
         /// <summary>
-        /// Initializas a new instance of the <see cref="CreateRepositoryModel"/> class.
+        /// Initializes a new instance of the <see cref="CreateRepositoryModel" /> class.
         /// </summary>
         /// <param name="name">The name of the repository.</param>
         /// <param name="description">The description of new repository.</param>

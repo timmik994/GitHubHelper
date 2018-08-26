@@ -7,7 +7,7 @@
     public abstract class AbstractCommand
     {
         /// <summary>
-        /// In this methods command will ack user for parameters.
+        /// In this methods command will ack parameters.
         /// </summary>
         public abstract void GetParameters();
 

@@ -3,7 +3,7 @@
     using Xunit;
 
     /// <summary>
-    /// Tests for the methods in Program class
+    /// Tests for the methods in Program class.
     /// </summary>
     public class ProgramTest
     {
