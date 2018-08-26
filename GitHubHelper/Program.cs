@@ -1,10 +1,18 @@
-﻿using System;
-
+﻿
 namespace GitHubHelper
 {
-    class Program
+    using System;
+
+    /// <summary>
+    /// Entry point of the program.
+    /// </summary>
+    public class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// The main method.
+        /// </summary>
+        /// <param name="args">String of arguments.</param>
+        public static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
         }
