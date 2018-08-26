@@ -8,12 +8,6 @@
     public class Repository
     {
         /// <summary>
-        /// Gets or sets author of the repository.
-        /// </summary>
-        [JsonProperty("owner")]
-        public User Owner { get; set; }
-
-        /// <summary>
         /// Gets or sets name of repository.
         /// </summary>
         [JsonProperty("name")]
@@ -37,7 +31,7 @@
         /// <returns>String representation of class data.</returns>
         public override string ToString()
         {
-            return $"{this.Name}  {this.Owner}  {this.CreatedAt}  {this.Description}";
+            return $"{this.Name}  {this.CreatedAt}  {this.Description}";
         }
     }
 }

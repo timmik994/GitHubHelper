@@ -9,4 +9,11 @@
     <ProjectReference Include="..\GitHubClient\GitHubClient.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Commands\CommandFactory.cs">
+      <ExcludeFromSourceAnalysis>True</ExcludeFromSourceAnalysis>
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+  </ItemGroup>
+
 </Project>

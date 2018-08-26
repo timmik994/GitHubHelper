@@ -19,7 +19,8 @@
             switch (command)
             {
                 case "create": return new CreateRepoCommand();
-                case "getusrrepos": return new UserReposCommand();
+                case "userepos": return new UserReposCommand();
+                case "myrepos": return new MyReposCommand();
                 default: return null;
             }
         }
@@ -32,8 +33,9 @@
         {
             StringBuilder helpMessage = new StringBuilder();
             helpMessage.AppendLine("help: show help message.");
-            helpMessage.AppendLine("create: creates the repository");
-            helpMessage.AppendLine("getusrrepos: gets repos for cpecified user");
+            helpMessage.AppendLine("create: creates the repository.");
+            helpMessage.AppendLine("userepos: gets repos for cpecified user.");
+            helpMessage.AppendLine("myrepos: get repositories of current user.");
             helpMessage.AppendLine("exit: exit from application.");
             return helpMessage.ToString();
         }
