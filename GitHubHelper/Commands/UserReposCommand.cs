@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using GitHubClient;
     using GitHubClient.Model;
 
@@ -56,10 +55,9 @@
             }
             else
             {
-                IEnumerable<string> reposData = this.repositories.Select(rep => rep.ToString());
-                foreach (var s in reposData)
+                foreach (var repo in repositories)
                 {
-                    Console.WriteLine(s);
+                    Console.WriteLine(repo.ToString());
                 }
             }
         }

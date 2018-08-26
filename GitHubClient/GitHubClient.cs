@@ -95,32 +95,6 @@
         }
 
         /// <summary>
-        /// Generates basic HttpRequestMessage object.
-        /// </summary>
-        /// <param name="uri">The uri of the endpoint.</param>
-        /// <returns>The basic request object without content.</returns>
-        public HttpRequestMessage GenerateBasicRequest(string uri)
-        {
-            HttpRequestMessage request = new HttpRequestMessage();
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.accessToken);
-            request.Headers.Add("User-Agent", "c#App");
-            request.RequestUri = new Uri(uri);
-            return request;
-        }
-
-        /// <summary>
-        /// Sends specified request.
-        /// </summary>
-        /// <param name="request">The request object.</param>
-        /// <returns>The responce to request.</returns>
-        public HttpResponseMessage SendRequest(HttpRequestMessage request)
-        {
-            HttpClient client = new HttpClient();
-            HttpResponseMessage responce = client.SendAsync(request).GetAwaiter().GetResult();
-            return responce;
-        }
-
-        /// <summary>
         /// This method creates repository on gitHub.
         /// </summary>
         /// <param name="repositoryModel">The data about repository.</param>
@@ -206,6 +180,32 @@
                     return null;
                 }
             }
+        }
+
+        /// <summary>
+        /// Generates basic HttpRequestMessage object.
+        /// </summary>
+        /// <param name="uri">The uri of the endpoint.</param>
+        /// <returns>The basic request object without content.</returns>
+        private HttpRequestMessage GenerateBasicRequest(string uri)
+        {
+            HttpRequestMessage request = new HttpRequestMessage();
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.accessToken);
+            request.Headers.Add("User-Agent", "c#App");
+            request.RequestUri = new Uri(uri);
+            return request;
+        }
+
+        /// <summary>
+        /// Sends specified request.
+        /// </summary>
+        /// <param name="request">The request object.</param>
+        /// <returns>The responce to request.</returns>
+        private HttpResponseMessage SendRequest(HttpRequestMessage request)
+        {
+            HttpClient client = new HttpClient();
+            HttpResponseMessage responce = client.SendAsync(request).GetAwaiter().GetResult();
+            return responce;
         }
     }
 }
