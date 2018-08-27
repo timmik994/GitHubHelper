@@ -4,7 +4,7 @@
     using Xunit;
 
     /// <summary>
-    /// This class contains tests for CommandFactoryClass
+    /// Tests for CommandFactoryClass
     /// </summary>
     public class CommandFactoryTests
     {

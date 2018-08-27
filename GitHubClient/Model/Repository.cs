@@ -3,7 +3,7 @@
     using Newtonsoft.Json;
 
     /// <summary>
-    /// This class represents repository from github.
+    /// Git repository.
     /// </summary>
     public class Repository
     {

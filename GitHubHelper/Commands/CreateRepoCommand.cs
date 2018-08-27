@@ -5,7 +5,7 @@
     using GitHubClient.Model;
 
     /// <summary>
-    /// The actions to create repository.
+    /// Command that creates new repository.
     /// </summary>
     public class CreateRepoCommand : AbstractCommand
     {
@@ -20,7 +20,7 @@
         private string responce;
 
         /// <summary>
-        /// Asks nesessary parameters from console.
+        /// Asks name and description of repository.
         /// </summary>
         public override void GetParameters()
         {

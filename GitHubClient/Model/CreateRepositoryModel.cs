@@ -3,7 +3,7 @@
     using Newtonsoft.Json;
 
     /// <summary>
-    /// The data needed for create repository.
+    /// Data that we send to server to create new repository.
     /// </summary>
     public class CreateRepositoryModel
     {

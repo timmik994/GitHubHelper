@@ -3,7 +3,7 @@
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Represents git hub user.
+    /// Git hub user.
     /// </summary>
     public class User
     {

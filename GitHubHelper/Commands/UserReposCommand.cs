@@ -6,8 +6,7 @@
     using GitHubClient.Model;
 
     /// <summary>
-    /// This class represents command, that
-    /// gets repositories of specified user.
+    /// Command, that gets repositories of specified user.
     /// </summary>
     public class UserReposCommand : AbstractCommand
     {
@@ -27,7 +26,7 @@
         private string message;
 
         /// <summary>
-        /// Asks username from user.
+        /// Asks the username.
         /// </summary>
         public override void GetParameters()
         {
@@ -45,7 +44,7 @@
         }
 
         /// <summary>
-        /// Shows results in console.
+        /// Shows list of repositories or message if repositories list is null.
         /// </summary>
         public override void ShowResult()
         {

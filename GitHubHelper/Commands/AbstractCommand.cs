@@ -1,8 +1,7 @@
 ﻿namespace GitHubHelper.Commands
 {
     /// <summary>
-    /// This class contains fields and methods
-    /// that common for all commands.
+    /// Abstract class of the command.
     /// </summary>
     public abstract class AbstractCommand
     {

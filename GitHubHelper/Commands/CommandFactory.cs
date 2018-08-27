@@ -3,8 +3,7 @@
     using System.Text;
 
     /// <summary>
-    /// This class will create command
-    /// instances by command string.
+    /// Realisation of command pattern.
     /// </summary>
     public static class CommandFactory
     {
@@ -21,6 +20,7 @@
                 case "create": return new CreateRepoCommand();
                 case "userepos": return new UserReposCommand();
                 case "myrepos": return new MyReposCommand();
+                case "branches": return new GetBranchesCommand();
                 default: return null;
             }
         }
@@ -36,6 +36,7 @@
             helpMessage.AppendLine("create: creates the repository.");
             helpMessage.AppendLine("userepos: gets repos for cpecified user.");
             helpMessage.AppendLine("myrepos: get repositories of current user.");
+            helpMessage.AppendLine("branches: get list of branches");
             helpMessage.AppendLine("exit: exit from application.");
             return helpMessage.ToString();
         }

@@ -12,7 +12,12 @@
         /// <summary>
         /// Const string to write between commands.
         /// </summary>
-        private const string DelimeterMessage = "-----------------------------------------------------";
+        public const string DelimeterMessage = "-----------------------------------------------------";
+
+        /// <summary>
+        /// Indicates is program need continue running.
+        /// </summary>
+        private static bool continueRunning;
 
         /// <summary>
         /// The main method.
@@ -26,13 +31,13 @@
             string token = Console.ReadLine();
             GitHubApiClient gitHubClient = GitHubApiClient.GetInstance();
             gitHubClient.SetAccessToken(token);
-            bool running = true;
-            while (running)
+            continueRunning = true;
+            while (continueRunning)
             {
                 Console.WriteLine(Program.DelimeterMessage);
                 Console.Write(">>>");
                 string command = Console.ReadLine();
-                running = ProcessCommand(command);
+                ProcessCommand(command);
             }
         }
 
@@ -40,19 +45,17 @@
         /// Processes the command.
         /// </summary>
         /// <param name="command">The command from user.</param>
-        /// <returns>The false if nedeed to stop application. Otherwise true.</returns>
-        public static bool ProcessCommand(string command)
+        public static void ProcessCommand(string command)
         {
             if (command == "exit")
             {
-                return false;
+                Program.continueRunning = false;
             }
 
             if (command == "help")
             {
                 Console.WriteLine(Program.DelimeterMessage);
                 Console.WriteLine(CommandFactory.GetHelp());
-                return true;
             }
 
             AbstractCommand commandInstance = CommandFactory.GetCommand(command);
@@ -67,8 +70,6 @@
                 Console.WriteLine($"Command '{command}' is invalid. Please see help.");
                 Console.WriteLine(CommandFactory.GetHelp());
             }
-
-            return true;
         }
     }
 }

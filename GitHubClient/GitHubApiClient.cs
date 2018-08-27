@@ -9,7 +9,7 @@
     using Newtonsoft.Json;
 
     /// <summary>
-    /// This class contains methods to communicate with gitHub.
+    /// GitHub client class.
     /// </summary>
     public class GitHubApiClient
     {
@@ -128,13 +128,12 @@
             string uri = $"{baseUrl}users/{username}/repos";
             HttpRequestMessage request = this.GenerateBasicRequest(uri);
             HttpResponseMessage responce = this.SendRequest(request);
-            string content = responce.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-
             switch (responce.StatusCode)
             {
                 case HttpStatusCode.OK:
                 {
                     message = "Successfil";
+                    string content = responce.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                     List<Repository> repositories = JsonConvert.DeserializeObject<List<Repository>>(content);
                     return repositories;
                 }
@@ -164,12 +163,12 @@
             string uri = $"{baseUrl}user/repos";
             HttpRequestMessage request = this.GenerateBasicRequest(uri);
             HttpResponseMessage responce = this.SendRequest(request);
-            string content = responce.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             switch (responce.StatusCode)
             {
                 case HttpStatusCode.OK:
                 {
                     message = "Successfil";
+                    string content = responce.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                     List<Repository> repositories = JsonConvert.DeserializeObject<List<Repository>>(content);
                     return repositories;
                 }
@@ -177,6 +176,43 @@
                 default:
                 {
                     message = $"request ended with status code {responce.StatusCode}";
+                    return null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get list of branch from specified repo.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="repoName">The name of the repository.</param>
+        /// <param name="message">The message from client.</param>
+        /// <returns>List of branches.</returns>
+        public List<Branch> GetBranchesList(string username, string repoName, out string message)
+        {
+            message = string.Empty;
+            string uri = $"{baseUrl}repos/{username}/{repoName}/branches";
+            HttpRequestMessage request = this.GenerateBasicRequest(uri);
+            HttpResponseMessage responce = this.SendRequest(request);
+            switch (responce.StatusCode)
+            {
+                case HttpStatusCode.OK:
+                {
+                    message = "success";
+                    string content = responce.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    List<Branch> branches = JsonConvert.DeserializeObject<List<Branch>>(content);
+                    return branches;
+                }
+
+                case HttpStatusCode.NotFound:
+                {
+                    message = $"Repo {repoName} or user {username} does not exists";
+                    return null;
+                }
+
+                default:
+                {
+                    message = $"Request ended with status code: {responce.StatusCode}";
                     return null;
                 }
             }

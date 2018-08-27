@@ -4,7 +4,7 @@
     using Xunit;
 
     /// <summary>
-    /// This class contains tests for test git hub api client.
+    /// Test class for git hub client methods.
     /// </summary>
     public class GitHubApiClientTests
     {

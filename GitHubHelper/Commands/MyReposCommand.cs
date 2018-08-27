@@ -7,8 +7,7 @@
     using GitHubClient.Model;
 
     /// <summary>
-    /// This class represents command, that
-    /// gets repositories of specified user.
+    /// Command that get repos of current user.
     /// </summary>
     public class MyReposCommand : AbstractCommand
     {
@@ -30,7 +29,7 @@
         }
 
         /// <summary>
-        /// Gets the repositories.
+        /// Gets the repositories list from gitHub.
         /// </summary>
         public override void RunCommand()
         {
@@ -39,7 +38,7 @@
         }
 
         /// <summary>
-        /// Shows results in console.
+        /// Shows list of repositories or message if repositories list is null.
         /// </summary>
         public override void ShowResult()
         {
