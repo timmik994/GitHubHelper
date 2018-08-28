@@ -47,15 +47,17 @@
         /// <param name="command">The command from user.</param>
         public static void ProcessCommand(string command)
         {
-            if (command == "exit")
+            if (command == CommandFactory.EXIT)
             {
                 Program.continueRunning = false;
+                return;
             }
 
-            if (command == "help")
+            if (command == CommandFactory.GET_HELP)
             {
                 Console.WriteLine(Program.DelimeterMessage);
                 Console.WriteLine(CommandFactory.GetHelp());
+                return;
             }
 
             AbstractCommand commandInstance = CommandFactory.GetCommand(command);

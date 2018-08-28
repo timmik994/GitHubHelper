@@ -54,7 +54,7 @@
             }
             else
             {
-                foreach (var repo in repositories)
+                foreach (var repo in this.repositories)
                 {
                     Console.WriteLine(repo.ToString());
                 }

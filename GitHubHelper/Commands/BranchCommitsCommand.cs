@@ -2,14 +2,20 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Text;
     using GitHubClient;
     using GitHubClient.Model;
 
     /// <summary>
-    /// Command that gets the branches list from repo.
+    /// Command to get repositories of branch.
     /// </summary>
-    public class GetBranchesCommand : AbstractCommand
+    public class BranchCommitsCommand : AbstractCommand
     {
+        /// <summary>
+        /// String that prints between commits.
+        /// </summary>
+        private const string COMMITDELIMETER = "_________________________";
+
         /// <summary>
         /// The username.
         /// </summary>
@@ -26,9 +32,9 @@
         private string repoName;
 
         /// <summary>
-        /// List of branches.
+        /// The name of the branch.
         /// </summary>
-        private List<Branch> branches;
+        private string branchName;
 
         /// <summary>
         /// The message from gitHub client.
@@ -36,7 +42,12 @@
         private string message;
 
         /// <summary>
-        /// Gets the parameters for command.
+        /// The list of commits from git hub.
+        /// </summary>
+        private List<Commit> commits;
+
+        /// <summary>
+        /// Get the parameters to run command.
         /// </summary>
         public override void GetParameters()
         {
@@ -50,10 +61,12 @@
 
             Console.WriteLine("Enter name of repository");
             this.repoName = Console.ReadLine();
+            Console.WriteLine("Enter the branch name");
+            this.branchName = Console.ReadLine();
         }
 
         /// <summary>
-        /// Gets list of branches from one repository.
+        /// Gets the list of commits from branch.
         /// </summary>
         public override void RunCommand()
         {
@@ -65,25 +78,27 @@
 
             if (this.message == GitHubApiClient.SUCCESSMESSAGE)
             {
-                this.branches = gitHubClient.GetBranchesList(this.username, this.repoName, out this.message);
+                this.commits =
+                    gitHubClient.GetBranchCommits(this.username, this.repoName, this.branchName, out this.message);
             }
         }
 
         /// <summary>
-        /// Shows list of branches, or message if branches is null.
+        /// Shows list of commits or message if commits is null.
         /// </summary>
         public override void ShowResult()
         {
-            if (this.branches == null)
+            if (this.commits == null)
             {
                 Console.WriteLine(this.message);
             }
             else
             {
-                Console.WriteLine("List of branches:");
-                foreach (var item in this.branches)
+                Console.WriteLine("commits:");
+                foreach (var item in this.commits)
                 {
-                    Console.WriteLine(item.Name);
+                    Console.WriteLine(BranchCommitsCommand.COMMITDELIMETER);
+                    Console.WriteLine(item.ToString());
                 }
             }
         }

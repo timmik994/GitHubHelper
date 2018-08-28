@@ -14,6 +14,11 @@
     public class GitHubApiClient
     {
         /// <summary>
+        /// Message from success operation.
+        /// </summary>
+        public const string SUCCESSMESSAGE = "success";
+
+        /// <summary>
         /// The instance of GitHubClient.
         /// </summary>
         private static GitHubApiClient instance;
@@ -67,20 +72,20 @@
                 {
                     string userJson = userResponce.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                     User curentUser = JsonConvert.DeserializeObject<User>(userJson);
-                    message = "Data fetched";
-                    return curentUser.Name;
+                    message = GitHubApiClient.SUCCESSMESSAGE;
+                    return curentUser.Login;
                 }
 
                 case HttpStatusCode.Unauthorized:
                 {
                     message = "Please use another token";
-                    return null;
+                    return string.Empty;
                 }
 
                 default:
                 {
                     message = $"Request ended with status code {userResponce.StatusCode}";
-                    return null;
+                    return string.Empty;
                 }
             }
         } 
@@ -117,7 +122,7 @@
         }
 
         /// <summary>
-        /// Get list of repositories of specified user.
+        /// Gets list of repositories of specified user.
         /// </summary>
         /// <param name="username">The username.</param>
         /// <param name="message">The message from client.</param>
@@ -132,7 +137,7 @@
             {
                 case HttpStatusCode.OK:
                 {
-                    message = "Successfil";
+                    message = GitHubApiClient.SUCCESSMESSAGE;
                     string content = responce.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                     List<Repository> repositories = JsonConvert.DeserializeObject<List<Repository>>(content);
                     return repositories;
@@ -167,7 +172,7 @@
             {
                 case HttpStatusCode.OK:
                 {
-                    message = "Successfil";
+                    message = GitHubApiClient.SUCCESSMESSAGE;
                     string content = responce.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                     List<Repository> repositories = JsonConvert.DeserializeObject<List<Repository>>(content);
                     return repositories;
@@ -198,10 +203,92 @@
             {
                 case HttpStatusCode.OK:
                 {
-                    message = "success";
+                    message = GitHubApiClient.SUCCESSMESSAGE;
                     string content = responce.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                     List<Branch> branches = JsonConvert.DeserializeObject<List<Branch>>(content);
                     return branches;
+                }
+
+                case HttpStatusCode.NotFound:
+                {
+                    message = $"Repo {repoName} or user {username} does not exists";
+                    return null;
+                }
+
+                default:
+                {
+                    message = $"Request ended with status code: {responce.StatusCode}";
+                    return null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets commits from branch.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="repoName">The name of the repository.</param>
+        /// <param name="branchName">The name of the branch.</param>
+        /// <param name="message">The message from the client.</param>
+        /// <returns>List of commits.</returns>
+        public List<Commit> GetBranchCommits(string username, string repoName, string branchName, out string message)
+        {
+            message = string.Empty;
+            string uri = $"{baseUrl}repos/{username}/{repoName}/commits?sha={branchName}";
+            HttpRequestMessage request = this.GenerateBasicRequest(uri);
+            HttpResponseMessage responce = this.SendRequest(request);
+            switch (responce.StatusCode)
+            {
+                case HttpStatusCode.OK:
+                {
+                    message = GitHubApiClient.SUCCESSMESSAGE;
+                    string content = responce.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    List<Commit> branches = JsonConvert.DeserializeObject<List<Commit>>(content);
+                    return branches;
+                }
+
+                case HttpStatusCode.NotFound:
+                {
+                    message = $"Repo {repoName} or user {username} or branch {branchName} does not exists";
+                    return null;
+                }
+
+                default:
+                {
+                    message = $"Request ended with status code: {responce.StatusCode}";
+                    return null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets commits from repository.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="repoName">The name of the repository.</param>
+        /// <param name="message">The message from the client.</param>
+        /// <returns>List of the commits.</returns>
+        public List<Commit> GetReposiroryCommits(string username, string repoName, out string message)
+        {
+            message = string.Empty;
+            string uri = $"{baseUrl}repos/{username}/{repoName}/commits";
+            HttpRequestMessage request = this.GenerateBasicRequest(uri);
+            HttpResponseMessage responce = this.SendRequest(request);
+            switch (responce.StatusCode)
+            {
+                case HttpStatusCode.OK:
+                {
+                    message = GitHubApiClient.SUCCESSMESSAGE;
+                    string content = responce.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    List<Commit> commits = JsonConvert.DeserializeObject<List<Commit>>(content);
+                    return commits;
+                }
+                
+                // If Status code is 409 it means that repository is empty.
+                case HttpStatusCode.Conflict:
+                {
+                    message = GitHubApiClient.SUCCESSMESSAGE;
+                    return new List<Commit>();
                 }
 
                 case HttpStatusCode.NotFound:

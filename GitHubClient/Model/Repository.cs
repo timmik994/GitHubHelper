@@ -37,7 +37,7 @@
         /// <returns>String representation of class data.</returns>
         public override string ToString()
         {
-            return $"{this.Name}   {this.Owner.Name}  {this.CreatedAt}  {this.Description}";
+            return $"{this.Name}   {this.Owner.Login}  {this.CreatedAt}  {this.Description}";
         }
     }
 }
