@@ -9,6 +9,7 @@
     /// <summary>
     /// Command that get repos of current user.
     /// </summary>
+    [Command("myrepos", "Get your repositories.")]
     public class MyReposCommand : AbstractCommand
     {
         /// <summary>
@@ -22,6 +23,15 @@
         private string message;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="MyReposCommand" /> class.
+        /// </summary>
+        /// <param name="consoleHelper">The ConsoleHelper instance.</param>
+        /// <param name="gitHubClient">The GitHubClient instance.</param>
+        public MyReposCommand(ConsoleWorker consoleHelper, GitHubApiClient gitHubClient) : base(consoleHelper, gitHubClient)
+        {
+        }
+
+        /// <summary>
         /// Asks username from user.
         /// </summary>
         public override void GetParameters()
@@ -33,8 +43,7 @@
         /// </summary>
         public override void RunCommand()
         {
-            GitHubApiClient client = GitHubApiClient.GetInstance();
-            this.repositories = client.GetMyRepositories(out this.message);
+            this.repositories = this.GitHubClient.GetMyRepositories(out this.message);
         }
 
         /// <summary>
@@ -44,14 +53,14 @@
         {
             if (this.repositories == null)
             {
-                Console.WriteLine(this.message);
+                this.ConslWorker.WriteInConsole(this.message);
             }
             else
             {
                 IEnumerable<string> reposData = this.repositories.Select(rep => rep.ToString());
-                foreach (var s in reposData)
+                foreach (var resp in reposData)
                 {
-                    Console.WriteLine(s);
+                    this.ConslWorker.WriteInConsole(resp);
                 }
             }
         }

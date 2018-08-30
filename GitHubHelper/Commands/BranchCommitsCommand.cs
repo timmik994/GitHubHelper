@@ -1,14 +1,13 @@
 ﻿namespace GitHubHelper.Commands
 {
-    using System;
     using System.Collections.Generic;
-    using System.Text;
     using GitHubClient;
     using GitHubClient.Model;
 
     /// <summary>
     /// Command to get repositories of branch.
     /// </summary>
+    [Command("commits", "Get commits in branch.")]
     public class BranchCommitsCommand : AbstractCommand
     {
         /// <summary>
@@ -47,22 +46,27 @@
         private List<Commit> commits;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="BranchCommitsCommand" /> class.
+        /// </summary>
+        /// <param name="consoleHelper">The ConsoleHelper instance.</param>
+        /// <param name="gitHubClient">The GitHubClient instance.</param>
+        public BranchCommitsCommand(ConsoleWorker consoleHelper, GitHubApiClient gitHubClient) : base(consoleHelper, gitHubClient)
+        {
+        }
+
+        /// <summary>
         /// Get the parameters to run command.
         /// </summary>
         public override void GetParameters()
         {
-            Console.WriteLine("Your repository?");
-            this.isYourRepo = this.GetUserAgree();
+            this.isYourRepo = this.ConslWorker.AskBoolParam("Your repository?");
             if (!this.isYourRepo)
             {
-                Console.WriteLine("Enter the username ");
-                this.username = Console.ReadLine();
+                this.username = this.ConslWorker.AskStringParam("Enter the username");
             }
 
-            Console.WriteLine("Enter name of repository");
-            this.repoName = Console.ReadLine();
-            Console.WriteLine("Enter the branch name");
-            this.branchName = Console.ReadLine();
+            this.repoName = this.ConslWorker.AskStringParam("Enter name of repository");
+            this.branchName = this.ConslWorker.AskStringParam("Enter the branch name");
         }
 
         /// <summary>
@@ -70,16 +74,15 @@
         /// </summary>
         public override void RunCommand()
         {
-            GitHubApiClient gitHubClient = GitHubApiClient.GetInstance();
             if (this.isYourRepo)
             {
-                this.username = gitHubClient.GetCurrentUser(out this.message);
+                this.username = this.GitHubClient.GetCurrentUser(out this.message);
             }
 
             if (this.message == GitHubApiClient.SUCCESSMESSAGE)
             {
                 this.commits =
-                    gitHubClient.GetBranchCommits(this.username, this.repoName, this.branchName, out this.message);
+                    this.GitHubClient.GetBranchCommits(this.username, this.repoName, this.branchName, out this.message);
             }
         }
 
@@ -90,15 +93,15 @@
         {
             if (this.commits == null)
             {
-                Console.WriteLine(this.message);
+                this.ConslWorker.WriteInConsole(this.message);
             }
             else
             {
-                Console.WriteLine("commits:");
+                this.ConslWorker.WriteInConsole("commits:");
                 foreach (var item in this.commits)
                 {
-                    Console.WriteLine(BranchCommitsCommand.COMMITDELIMETER);
-                    Console.WriteLine(item.ToString());
+                    this.ConslWorker.WriteInConsole(BranchCommitsCommand.COMMITDELIMETER);
+                    this.ConslWorker.WriteInConsole(item.ToString());
                 }
             }
         }

@@ -127,7 +127,7 @@
         /// <param name="username">The username.</param>
         /// <param name="message">The message from client.</param>
         /// <returns>List of repositories.</returns>
-        public List<Repository> GetUserRepositories(string username, out string message)
+        public virtual List<Repository> GetUserRepositories(string username, out string message)
         {
             message = string.Empty;
             string uri = $"{baseUrl}users/{username}/repos";

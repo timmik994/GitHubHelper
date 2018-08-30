@@ -7,6 +7,7 @@
     /// <summary>
     /// Command that creates new repository.
     /// </summary>
+    [Command("create", "Creates the repository.")]
     public class CreateRepoCommand : AbstractCommand
     {
         /// <summary>
@@ -20,14 +21,21 @@
         private string responce;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CreateRepoCommand" /> class.
+        /// </summary>
+        /// <param name="consoleHelper">The ConsoleHelper instance.</param>
+        /// <param name="gitHubClient">The GitHubClient instance.</param>
+        public CreateRepoCommand(ConsoleWorker consoleHelper, GitHubApiClient gitHubClient) : base(consoleHelper, gitHubClient)
+        {
+        }
+
+        /// <summary>
         /// Asks name and description of repository.
         /// </summary>
         public override void GetParameters()
         {
-            Console.WriteLine("Name of the repository");
-            string repositoryName = Console.ReadLine();
-            Console.WriteLine("Description:");
-            string repositoryDescription = Console.ReadLine();
+            string repositoryName = this.ConslWorker.AskStringParam("Name of the repository");
+            string repositoryDescription = this.ConslWorker.AskStringParam("Description:");
             this.repositoryData = new CreateRepositoryModel(repositoryName, repositoryDescription);
         }
 
@@ -36,8 +44,7 @@
         /// </summary>
         public override void RunCommand()
         {
-            GitHubApiClient gitHubClient = GitHubApiClient.GetInstance();
-            this.responce = gitHubClient.CreateRepository(this.repositoryData);
+            this.responce = this.GitHubClient.CreateRepository(this.repositoryData);
         }
 
         /// <summary>
@@ -45,7 +52,7 @@
         /// </summary>
         public override void ShowResult()
         {
-           Console.WriteLine(this.responce);
+           this.ConslWorker.WriteInConsole(this.responce);
         }
     }
 }

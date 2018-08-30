@@ -8,6 +8,7 @@
     /// <summary>
     /// Command that gets count of commits.
     /// </summary>
+    [Command("commitscount", "Returns count of commits.")]
     public class CommitCountCommand : AbstractCommand
     {
         /// <summary>
@@ -41,22 +42,27 @@
         private int commitsCount;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CommitCountCommand" /> class.
+        /// </summary>
+        /// <param name="consoleHelper">The ConsoleHelper instance.</param>
+        /// <param name="gitHubClient">The GitHubClient instance.</param>
+        public CommitCountCommand(ConsoleWorker consoleHelper, GitHubApiClient gitHubClient) : base(consoleHelper, gitHubClient)
+        {
+        }
+
+        /// <summary>
         /// Gets the parameters to run command.
         /// </summary>
         public override void GetParameters()
         {
-            Console.WriteLine("In all repositories?");
-            this.inAllRepos = this.GetUserAgree();
+            this.inAllRepos = this.ConslWorker.AskBoolParam("In all repositories?");
             if (!this.inAllRepos)
             {
-                Console.WriteLine("Enter name of repository");
-                this.repoName = Console.ReadLine();
-                Console.WriteLine("Your repository?");
-                this.isYourRepo = this.GetUserAgree();
+                this.repoName = this.ConslWorker.AskStringParam("Enter name of repository");
+                this.isYourRepo = this.ConslWorker.AskBoolParam("Your repository?");
                 if (!this.isYourRepo)
                 {
-                    Console.WriteLine("Enter repository owner");
-                    this.username = Console.ReadLine();
+                    this.username = this.ConslWorker.AskStringParam("Enter repository owner");
                 }
             }
         }
@@ -67,10 +73,9 @@
         /// </summary>
         public override void RunCommand()
         {
-            GitHubApiClient gitHubClient = GitHubApiClient.GetInstance();
             if (this.isYourRepo)
             {
-                this.username = gitHubClient.GetCurrentUser(out this.message);
+                this.username = this.GitHubClient.GetCurrentUser(out this.message);
                 if (this.message != GitHubApiClient.SUCCESSMESSAGE)
                 {
                     return;
@@ -83,7 +88,7 @@
             }
             else
             {
-                List<Repository> repositories = gitHubClient.GetMyRepositories(out this.message);
+                List<Repository> repositories = this.GitHubClient.GetMyRepositories(out this.message);
                 if (repositories != null)
                 {
                     foreach (var repo in repositories)
@@ -102,11 +107,11 @@
         {
             if (this.message == GitHubApiClient.SUCCESSMESSAGE)
             {
-                Console.WriteLine($"Count of commits: {this.commitsCount}");
+                this.ConslWorker.WriteInConsole($"Count of commits: {this.commitsCount}");
             }
             else
             {
-                Console.WriteLine("The are some problems with requests.");
+                this.ConslWorker.WriteInConsole("The are some problems with requests.");
             }
         }
 
@@ -118,8 +123,7 @@
         /// <returns>Count of commits in repository.</returns>
         private int GetCommitCountInRepo(string repositoryName, string ownreUsername)
         {
-            GitHubApiClient gitHubClient = GitHubApiClient.GetInstance();
-            List<Commit> commits = gitHubClient.GetReposiroryCommits(ownreUsername, repositoryName, out this.message);
+            List<Commit> commits = this.GitHubClient.GetReposiroryCommits(ownreUsername, repositoryName, out this.message);
             if (commits != null)
             {
                 return commits.Count;

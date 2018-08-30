@@ -1,6 +1,6 @@
 ﻿namespace GitHubHelper.Commands
 {
-    using System;
+    using GitHubClient;
 
     /// <summary>
     /// Abstract class of the command.
@@ -8,14 +8,25 @@
     public abstract class AbstractCommand
     {
         /// <summary>
-        /// String of yes answer.
+        /// Initializes a new instance of the <see cref="AbstractCommand" /> class.
         /// </summary>
-        private const string YES = "yes";
+        /// <param name="consoleHelper">The ConsoleHelper instance.</param>
+        /// <param name="gitHubClient">The GitHubClient instance.</param>
+        public AbstractCommand(ConsoleWorker consoleHelper, GitHubApiClient gitHubClient)
+        {
+            this.ConslWorker = consoleHelper;
+            this.GitHubClient = gitHubClient;
+        }
 
         /// <summary>
-        /// String of no answer.
+        /// Gets or sets instance of ConsoleHelper class.
         /// </summary>
-        private const string NO = "no";
+        protected ConsoleWorker ConslWorker { get; set; }
+
+        /// <summary>
+        /// Gets or sets instance of GitHubApiClient to help work with gitHub.
+        /// </summary>
+        protected GitHubApiClient GitHubClient { get; set; }
 
         /// <summary>
         /// In this methods command will ack parameters.
@@ -31,31 +42,5 @@
         /// In this method results of command will be shown in console.
         /// </summary>
         public abstract void ShowResult();
-
-        /// <summary>
-        /// Get useranswer yes or no.
-        /// </summary>
-        /// <returns>True if user agree. Otherwise false.</returns>
-        protected bool GetUserAgree()
-        {
-            do
-            {
-                Console.WriteLine("Print [yes/no]");
-                string answer = Console.ReadLine();
-                if (answer == AbstractCommand.YES)
-                {
-                    return true;
-                }
-                else if (answer == AbstractCommand.NO)
-                {
-                    return false;
-                }
-                else
-                {
-                    Console.WriteLine("Incorrect answer. Print 'yes' or 'no'");
-                }
-            }
-            while (true);
-        }
     }
 }
