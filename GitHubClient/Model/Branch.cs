@@ -12,5 +12,17 @@
         /// </summary>
         [JsonProperty("name")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating wether branch is protected.
+        /// </summary>
+        [JsonProperty("protected")]
+        public bool IsProtected { get; set; }
+
+        /// <summary>
+        /// Gets or sets last commit.
+        /// </summary>
+        [JsonProperty("commit")]
+        public BasicCommitData Commit { get; set; }
     }
 }

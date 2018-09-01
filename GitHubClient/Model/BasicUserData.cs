@@ -3,9 +3,9 @@
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Git hub user.
+    /// Basic data of gitHub User.
     /// </summary>
-    public class User
+    public class BasicUserData
     {
         /// <summary>
         /// Gets or sets login of the user.
