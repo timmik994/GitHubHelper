@@ -18,4 +18,11 @@
     <ProjectReference Include="..\GitHubClient\GitHubClient.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="CommitServiceTest.cs">
+      <ExcludeFromSourceAnalysis>False</ExcludeFromSourceAnalysis>
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+  </ItemGroup>
+
 </Project>

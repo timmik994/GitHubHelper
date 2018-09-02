@@ -8,7 +8,7 @@
         /// <summary>
         /// Path to current user.
         /// </summary>
-        public const string currentUserUrlPart = "user";
+        public const string CurrentUserUrlPart = "user";
 
         /// <summary>
         /// Part of path to users.

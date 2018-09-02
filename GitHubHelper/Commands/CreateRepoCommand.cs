@@ -16,9 +16,9 @@
         private CreateRepositoryModel repositoryData;
 
         /// <summary>
-        /// The responce of the system.
+        /// The response of the system.
         /// </summary>
-        private string responce;
+        private string response;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateRepoCommand" /> class.
@@ -44,7 +44,7 @@
         /// </summary>
         public override void RunCommand()
         {
-            //this.responce = this.GitHubClient.CreateRepository(this.repositoryData);
+            //this.response = this.GitHubClient.CreateRepository(this.repositoryData);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@
         /// </summary>
         public override void ShowResult()
         {
-           this.ConslWorker.WriteInConsole(this.responce);
+           this.ConslWorker.WriteInConsole(this.response);
         }
     }
 }

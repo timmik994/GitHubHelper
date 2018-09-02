@@ -14,7 +14,7 @@
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating wether branch is protected.
+        /// Gets or sets a value indicating whether branch is protected.
         /// </summary>
         [JsonProperty("protected")]
         public bool IsProtected { get; set; }

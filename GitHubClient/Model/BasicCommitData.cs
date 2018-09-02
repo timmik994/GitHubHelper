@@ -18,6 +18,5 @@
         /// </summary>
         [JsonProperty("url")]
         public string Url { get; set; }
-
     }
 }

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
-
-namespace GitHubClient.Model
+﻿namespace GitHubClient.Model
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using Newtonsoft.Json;
+
     /// <summary>
     /// License data.
     /// </summary>

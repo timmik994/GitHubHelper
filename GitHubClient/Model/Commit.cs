@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace GitHubClient.Model
+﻿namespace GitHubClient.Model
 {
+    using System.Collections.Generic;
     using System.Text;
     using Newtonsoft.Json;
 

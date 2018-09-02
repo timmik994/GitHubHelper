@@ -14,14 +14,14 @@
         /// </summary>
         /// <param name="username">The name of repository owner.</param>
         /// <param name="repositoryName">The repository name.</param>
-        /// <returns>ClientResponce instance with collection of branches.</returns>
-        Task<ClientResponce<IEnumerable<Branch>>> GetBranchList(string username, string repositoryName);
+        /// <returns>ClientResponse instance with collection of branches.</returns>
+        Task<ClientResponse<IEnumerable<Branch>>> GetBranchList(string username, string repositoryName);
 
         /// <summary>
         /// Gets branches list of specified repository.
         /// </summary>
         /// <param name="repositoryData">The data of repository.</param>
-        /// <returns>ClientResponce instance with collection of branches.</returns>
-        Task<ClientResponce<IEnumerable<Branch>>> GetBranchList(BasicRepositoryData repositoryData);
+        /// <returns>ClientResponse instance with collection of branches.</returns>
+        Task<ClientResponse<IEnumerable<Branch>>> GetBranchList(BasicRepositoryData repositoryData);
     }
 }

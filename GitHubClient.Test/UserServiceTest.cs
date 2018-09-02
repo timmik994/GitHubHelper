@@ -20,124 +20,62 @@
         private const string TestUserLogin = "test";
 
         /// <summary>
-        /// Test return value in successfull operation.
-        /// </summary>
-        [Fact]
-        public void TestGetCurrentUserFirstTime()
-        {
-            var mock = new Mock<IRequestSender>();
-            HttpResponseMessage testResponce = this.GenerateSussessfulResponceMessage();
-            mock.Setup(sender => sender.SendGetRequestAsync($"/{UrlConstants.currentUserUrlPart}"))
-                .ReturnsAsync(testResponce);
-            UserService userService = new UserService(mock.Object);
-            ClientResponce<FullUserData> testClientResponce = userService.GetCurrentUser().GetAwaiter().GetResult();
-            Assert.Equal(OperationStatus.Susseess, testClientResponce.Status);
-            Assert.Equal(MessagesHelper.StandartSuccessMessage, testClientResponce.Message);
-            FullUserData loadedUser = testClientResponce.ResponceData;
-            Assert.Equal(UserServiceTest.TestUserLogin, TestUserLogin);
-        }
-
-        /// <summary>
         /// Testa that insecond request returns same user object as in first.
         /// </summary>
         [Fact]
         public void TestGetCurrentUserSecondTime()
         {
-            var mock = new Mock<IRequestSender>();
-            HttpResponseMessage testResponce = this.GenerateSussessfulResponceMessage();
-            mock.Setup(sender => sender.SendGetRequestAsync($"/{UrlConstants.currentUserUrlPart}"))
-                .ReturnsAsync(testResponce);
-            UserService userService = new UserService(mock.Object);
-            ClientResponce<FullUserData> testClientResponceFirst = userService.GetCurrentUser().GetAwaiter().GetResult();
-            ClientResponce<FullUserData> testClientResponceSecond = userService.GetCurrentUser().GetAwaiter().GetResult();
-            Assert.Equal(testClientResponceFirst.ResponceData, testClientResponceSecond.ResponceData);
-            Assert.Equal(MessagesHelper.DataAlreadyLoadedMessage, testClientResponceSecond.Message);
-        }
+            HttpResponseMessage testResponse = this.GenerateSussessfulresponseMessage();
+            FullUserData testUserObject = this.GenerateTestUser();
+            ClientResponse<FullUserData> mockResponse = new ClientResponse<FullUserData>()
+            {
+                Message = MessagesHelper.StandartSuccessMessage,
+                Status = OperationStatus.Susseess,
+                ResponseData = testUserObject
+            };
 
-        /// <summary>
-        /// Tests GetCurrentUser if access token is wrong.
-        /// </summary>
-        [Fact]
-        public void TestGetCurrentUserWrongToken()
-        {
-            var httpResponce = new HttpResponseMessage(HttpStatusCode.Unauthorized);
             var mock = new Mock<IRequestSender>();
-            mock.Setup(sender => sender.SendGetRequestAsync($"/{UrlConstants.currentUserUrlPart}"))
-                .ReturnsAsync(httpResponce);
+            mock.Setup(sender => sender.SendGetRequestToGitHubApiAsync($"/{UrlConstants.CurrentUserUrlPart}"))
+                .ReturnsAsync(testResponse);
+            mock.Setup(sender =>
+                    sender.ProcessHttpResponse<FullUserData>(testResponse, MessagesHelper.StandartNotFoundMessage))
+                .ReturnsAsync(mockResponse);
             UserService userService = new UserService(mock.Object);
-            ClientResponce<FullUserData> testClientResponce = userService.GetCurrentUser().GetAwaiter().GetResult();
-            Assert.Equal(OperationStatus.Error, testClientResponce.Status);
-            Assert.Equal(MessagesHelper.UnAuthorizedMessage, testClientResponce.Message);
-            Assert.Null(testClientResponce.ResponceData);
-        }
-
-        /// <summary>
-        /// Tests situation with unknown error in http request.
-        /// </summary>
-        [Fact]
-        public void TestGetCurrentUserUnknownError()
-        {
-            var httpResponce = new HttpResponseMessage(HttpStatusCode.BadGateway);
-            var mock = new Mock<IRequestSender>();
-            mock.Setup(sender => sender.SendGetRequestAsync($"/{UrlConstants.currentUserUrlPart}"))
-                .ReturnsAsync(httpResponce);
-            UserService userService = new UserService(mock.Object);
-            ClientResponce<FullUserData> testClientResponce = userService.GetCurrentUser().GetAwaiter().GetResult();
-            Assert.Equal(OperationStatus.UnknownState, testClientResponce.Status);
-            Assert.Equal(MessagesHelper.UnknownErrorMessage, testClientResponce.Message);
-            Assert.Null(testClientResponce.ResponceData);
-        }
-
-        /// <summary>
-        /// Tests GetUserData with string param sussess responce.
-        /// </summary>
-        [Fact]
-        public void TestGetUserDataSuccess()
-        {
-            var mock = new Mock<IRequestSender>();
-            HttpResponseMessage testResponce = this.GenerateSussessfulResponceMessage();
-            mock.Setup(sender => sender.SendGetRequestAsync($"/{UrlConstants.UsersUrlPart}/{UserServiceTest.TestUserLogin}"))
-                .ReturnsAsync(testResponce);
-            UserService userService = new UserService(mock.Object);
-            ClientResponce<FullUserData> testClientResponce = userService.GetFullUserData(UserServiceTest.TestUserLogin).GetAwaiter().GetResult();
-            Assert.Equal(OperationStatus.Susseess, testClientResponce.Status);
-            Assert.Equal(MessagesHelper.StandartSuccessMessage, testClientResponce.Message);
-            FullUserData loadedUser = testClientResponce.ResponceData;
-            Assert.Equal(UserServiceTest.TestUserLogin, TestUserLogin);
-        }
-
-        /// <summary>
-        /// Tests if user not found.
-        /// </summary>
-        [Fact]
-        public void TestGetUserDataNotFound()
-        {
-            var httpResponce = new HttpResponseMessage(HttpStatusCode.NotFound);
-            var mock = new Mock<IRequestSender>();
-            mock.Setup(sender => sender.SendGetRequestAsync($"/{UrlConstants.UsersUrlPart}/{UserServiceTest.TestUserLogin}"))
-                .ReturnsAsync(httpResponce);
-            UserService userService = new UserService(mock.Object);
-            ClientResponce<FullUserData> testClientResponce = userService.GetFullUserData(UserServiceTest.TestUserLogin).GetAwaiter().GetResult();
-            Assert.Equal(OperationStatus.NotFound, testClientResponce.Status);
-            Assert.Equal(MessagesHelper.GenerateUserNotFoundMessage(UserServiceTest.TestUserLogin), testClientResponce.Message);
-            Assert.Null(testClientResponce.ResponceData);
+            ClientResponse<FullUserData> testClientResponseFirst = userService.GetCurrentUser().GetAwaiter().GetResult();
+            ClientResponse<FullUserData> testClientResponseSecond = userService.GetCurrentUser().GetAwaiter().GetResult();
+            Assert.Equal(testClientResponseFirst.ResponseData, testClientResponseSecond.ResponseData);
+            Assert.Equal(MessagesHelper.DataAlreadyLoadedMessage, testClientResponseSecond.Message);
+            mock.Verify(sender => sender.ProcessHttpResponse<FullUserData>(testResponse, MessagesHelper.StandartNotFoundMessage), Times.Once);
         }
 
         /// <summary>
         /// Tests GetUserData with object param if object is null.
         /// </summary>
         [Fact]
-        public void TestGetUserDataNull()
+        public void TestGetUserDataIfParameterNull()
         {
-            var httpResponce = new HttpResponseMessage(HttpStatusCode.NotFound);
+            var httpresponse = new HttpResponseMessage(HttpStatusCode.NotFound);
             var mock = new Mock<IRequestSender>();
-            mock.Setup(sender => sender.SendGetRequestAsync($"/{UrlConstants.UsersUrlPart}/{UserServiceTest.TestUserLogin}"))
-                .ReturnsAsync(httpResponce);
             UserService userService = new UserService(mock.Object);
-            ClientResponce<FullUserData> testClientResponce = userService.GetFullUserData((BasicUserData)null).GetAwaiter().GetResult();
-            Assert.Equal(OperationStatus.InvalidData, testClientResponce.Status);
-            Assert.Equal(MessagesHelper.EmptyDataMessage, testClientResponce.Message);
-            Assert.Null(testClientResponce.ResponceData);
+            ClientResponse<FullUserData> testClientResponse = userService.GetFullUserData((BasicUserData)null).GetAwaiter().GetResult();
+            Assert.Equal(OperationStatus.EmptyData, testClientResponse.Status);
+            Assert.Equal(MessagesHelper.EmptyDataMessage, testClientResponse.Message);
+            Assert.Null(testClientResponse.ResponseData);
+        }
+
+        /// <summary>
+        /// Tests GetUserData if passed empty string.
+        /// </summary>
+        [Fact]
+        public void TestGetUserDataIfPassedEmptyString()
+        {
+            var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.NotFound);
+            var mock = new Mock<IRequestSender>();
+            UserService userService = new UserService(mock.Object);
+            ClientResponse<FullUserData> testClientResponse = userService.GetFullUserData(string.Empty).GetAwaiter().GetResult();
+            Assert.Equal(OperationStatus.EmptyData, testClientResponse.Status);
+            Assert.Equal(MessagesHelper.EmptyDataMessage, testClientResponse.Message);
+            Assert.Null(testClientResponse.ResponseData);
         }
 
         /// <summary>
@@ -174,10 +112,10 @@
         }
 
         /// <summary>
-        /// Generates sussessfui http responce.
+        /// Generates sussessfui http response.
         /// </summary>
-        /// <returns>Http responce with status Ok.</returns>
-        private HttpResponseMessage GenerateSussessfulResponceMessage()
+        /// <returns>Http response with status Ok.</returns>
+        private HttpResponseMessage GenerateSussessfulresponseMessage()
         {
             FullUserData testUser = this.GenerateTestUser();
             string jsonString = this.GenerateUserJson(testUser);

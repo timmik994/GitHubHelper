@@ -1,11 +1,13 @@
 ﻿namespace GitHubClient
 {
     using System;
+    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Text;
     using System.Threading.Tasks;
     using GitHubClient.Interfaces;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Sender of http requests to gitHub api endpoints.
@@ -21,6 +23,11 @@
         /// Url of graphQl gitHub endpoint.
         /// </summary>
         public const string GraphQlEndpoint = "https://api.github.com/graphql";
+
+        /// <summary>
+        /// Scheme of authorization.
+        /// </summary>
+        public const string AuthorithationScheme = "Bearer";
 
         /// <summary>
         /// Name of user agent header.
@@ -49,22 +56,89 @@
         }
 
         /// <summary>
+        /// Method that processes http response that returned some data.
+        /// </summary>
+        /// <typeparam name="T">Type of data in ClientResponse.</typeparam>
+        /// <param name="responseMessage">The http response message.</param>
+        /// <param name="notFoundErrorMessage">The message shown if status code is NotFound.</param>
+        /// <returns>ClientResponse instance with status and parsed data.</returns>
+        public async Task<ClientResponse<T>> ProcessHttpResponse<T>(HttpResponseMessage responseMessage, string notFoundErrorMessage)
+        {
+            ClientResponse<T> clientResponse = new ClientResponse<T>();
+            switch (responseMessage.StatusCode)
+            {
+                case HttpStatusCode.Unauthorized:
+                    clientResponse.Status = OperationStatus.Error;
+                    clientResponse.Message = MessagesHelper.UnauthorizedMessage;
+                    break;
+                case HttpStatusCode.NotFound:
+                    clientResponse.Status = OperationStatus.NotFound;
+                    clientResponse.Message = notFoundErrorMessage;
+                    break;
+                case HttpStatusCode.Created:
+                    clientResponse.Status = OperationStatus.Susseess;
+                    clientResponse.Message = MessagesHelper.StandartSuccessMessage;
+                    break;
+                case HttpStatusCode.OK:
+                    clientResponse.Status = OperationStatus.Susseess;
+                    clientResponse.Message = MessagesHelper.StandartSuccessMessage;
+                    string jsonString = await responseMessage.Content.ReadAsStringAsync();
+                    try
+                    {
+                        clientResponse.ResponseData = JsonConvert.DeserializeObject<T>(jsonString);
+                    }
+                    catch (Exception)
+                    {
+                        clientResponse.Message = $"{MessagesHelper.InvalidJsonMessage}: {jsonString}";
+                        clientResponse.Status = OperationStatus.Error;
+                    }
+
+                    break;
+                default:
+                    clientResponse.Status = OperationStatus.UnknownState;
+                    clientResponse.Message = MessagesHelper.UnknownErrorMessage;
+                    break;
+            }
+
+            return clientResponse;
+        }
+
+        /// <summary>
+        /// Sends GET http request to absolute URl passed as parameter..
+        /// </summary>
+        /// <param name="url">The absolute url.</param>
+        /// <returns>Http response message.</returns>
+        public async Task<HttpResponseMessage> SendGetRequestToAbsoluteUrlAsync(string url)
+        {
+            HttpRequestMessage request = new HttpRequestMessage();
+            request.Headers.Authorization = new AuthenticationHeaderValue(HttpRequestSender.AuthorithationScheme, this.accessToken);
+            request.Headers.Add(HttpRequestSender.UserAgentHeaderName, this.userAgent);
+            request.Method = HttpMethod.Get;
+            request.RequestUri = new Uri(url);
+            using (var httpClient = new HttpClient())
+            {
+                HttpResponseMessage response = await httpClient.SendAsync(request);
+                return response;
+            }
+        }
+
+        /// <summary>
         /// Sends GET request to gitHub api.
         /// </summary>
         /// <param name="url">The relative url.</param>
-        /// <returns>Responce message.</returns>
-        public async Task<HttpResponseMessage> SendGetRequestAsync(string url)
+        /// <returns>Response message.</returns>
+        public async Task<HttpResponseMessage> SendGetRequestToGitHubApiAsync(string url)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.accessToken);
-            request.Headers.Add("User-Agent", "c#App");
+            request.Headers.Authorization = new AuthenticationHeaderValue(HttpRequestSender.AuthorithationScheme, this.accessToken);
+            request.Headers.Add(HttpRequestSender.UserAgentHeaderName, this.userAgent);
             request.Method = HttpMethod.Get;
             var fullUrl = $"{HttpRequestSender.BasicEndpoint}{url}";
             request.RequestUri = new Uri(fullUrl);
             using (var httpClient = new HttpClient())
             {
-                HttpResponseMessage responce = await httpClient.SendAsync(request);
-                return responce;
+                HttpResponseMessage response = await httpClient.SendAsync(request);
+                return response;
             }
         }
 
@@ -73,19 +147,19 @@
         /// </summary>
         /// <param name="url">The relative url.</param>
         /// <param name="content">The content to send in gitHub.</param>
-        /// <returns>Responce message.</returns>
-        public async Task<HttpResponseMessage> SendPostRequest(string url, string content)
+        /// <returns>Response message.</returns>
+        public async Task<HttpResponseMessage> SendPostRequestToGitHubApiAsync(string url, string content)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.accessToken);
-            request.Headers.Add("User-Agent", "c#App");
+            request.Headers.Authorization = new AuthenticationHeaderValue(HttpRequestSender.AuthorithationScheme, this.accessToken);
+            request.Headers.Add(HttpRequestSender.UserAgentHeaderName, this.userAgent);
             request.Method = HttpMethod.Post;
             request.Content = new StringContent(content, Encoding.UTF8, "application/json");
             var fullUrl = $"{HttpRequestSender.BasicEndpoint}{url}";
             using (var httpClient = new HttpClient())
             {
-                HttpResponseMessage responce = await httpClient.SendAsync(request);
-                return responce;
+                HttpResponseMessage response = await httpClient.SendAsync(request);
+                return response;
             }
         }
 
@@ -93,18 +167,18 @@
         /// Sends request to gitHub api graohQl endpoint.
         /// </summary>
         /// <param name="graphQlRequest">The graphQl request.</param>
-        /// <returns>Responce message.</returns>
-        public async Task<HttpResponseMessage> SendRequestToGraphQl(string graphQlRequest)
+        /// <returns>Response message.</returns>
+        public async Task<HttpResponseMessage> SendRequestToGraphQlEndpointAsync(string graphQlRequest)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.accessToken);
-            request.Headers.Add("User-Agent", "c#App");
+            request.Headers.Authorization = new AuthenticationHeaderValue(HttpRequestSender.AuthorithationScheme, this.accessToken);
+            request.Headers.Add(HttpRequestSender.UserAgentHeaderName, this.userAgent);
             request.Method = HttpMethod.Post;
             request.Content = new StringContent(graphQlRequest, Encoding.UTF8);
             using (var httpClient = new HttpClient())
             {
-                HttpResponseMessage responce = await httpClient.SendAsync(request);
-                return responce;
+                HttpResponseMessage response = await httpClient.SendAsync(request);
+                return response;
             }
         }
     }
