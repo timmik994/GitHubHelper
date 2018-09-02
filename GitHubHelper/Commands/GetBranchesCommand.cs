@@ -8,6 +8,7 @@
     /// <summary>
     /// Command that gets the branches list from repo.
     /// </summary>
+    [Command("branch", "Get branches from repository.")]
     public class GetBranchesCommand : AbstractCommand
     {
         /// <summary>
@@ -36,20 +37,26 @@
         private string message;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="GetBranchesCommand" /> class.
+        /// </summary>
+        /// <param name="consoleHelper">The ConsoleHelper instance.</param>
+        /// <param name="gitHubClient">The GitHubClient instance.</param>
+        public GetBranchesCommand(ConsoleWorker consoleHelper) : base(consoleHelper)
+        {
+        }
+
+        /// <summary>
         /// Gets the parameters for command.
         /// </summary>
         public override void GetParameters()
         {
-            Console.WriteLine("Your repository?");
-            this.isYourRepo = this.GetUserAgree();
+            this.isYourRepo = this.ConslWorker.AskBoolParam("Your repository?");
             if (!this.isYourRepo)
             {
-                Console.WriteLine("Enter the username ");
-                this.username = Console.ReadLine();
+                this.username = this.ConslWorker.AskStringParam("Enter the username ");
             }
 
-            Console.WriteLine("Enter name of repository");
-            this.repoName = Console.ReadLine();
+            this.repoName = this.ConslWorker.AskStringParam("Enter name of repository");
         }
 
         /// <summary>
@@ -57,16 +64,15 @@
         /// </summary>
         public override void RunCommand()
         {
-            GitHubApiClient gitHubClient = GitHubApiClient.GetInstance();
-            if (this.isYourRepo)
-            {
-                this.username = gitHubClient.GetCurrentUser(out this.message);
-            }
+            //if (this.isYourRepo)
+            //{
+            //    this.username = this.GitHubClient.GetCurrentUser(out this.message);
+            //}
 
-            if (this.message == GitHubApiClient.SUCCESSMESSAGE)
-            {
-                this.branches = gitHubClient.GetBranchesList(this.username, this.repoName, out this.message);
-            }
+            //if (this.message == GitHubApiClient.SUCCESSMESSAGE)
+            //{
+            //    this.branches = this.GitHubClient.GetBranchesList(this.username, this.repoName, out this.message);
+            //}
         }
 
         /// <summary>
@@ -76,14 +82,14 @@
         {
             if (this.branches == null)
             {
-                Console.WriteLine(this.message);
+                this.ConslWorker.WriteInConsole(this.message);
             }
             else
             {
-                Console.WriteLine("List of branches:");
+                this.ConslWorker.WriteInConsole("List of branches:");
                 foreach (var item in this.branches)
                 {
-                    Console.WriteLine(item.Name);
+                    this.ConslWorker.WriteInConsole(item.Name);
                 }
             }
         }

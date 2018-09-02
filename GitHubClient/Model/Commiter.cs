@@ -3,9 +3,9 @@
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Commiter in commit data.
+    /// Information about user who made commit.
     /// </summary>
-    public class CommitAuthor
+    public class Commiter
     {
         /// <summary>
         /// Gets or sets name of the commiter.

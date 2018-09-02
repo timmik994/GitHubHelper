@@ -15,9 +15,14 @@
         public const string DelimeterMessage = "-----------------------------------------------------";
 
         /// <summary>
-        /// Indicates is program need continue running.
+        /// Message to say hello to user.
         /// </summary>
-        private static bool continueRunning;
+        private const string StartMessage = "Hello from GitHubHelper. Please enter help to see instructions.";
+
+        /// <summary>
+        /// Gets or sets a value indicating whether program need continue running.
+        /// </summary>
+        public static bool ContinueRunning { get; set; }
 
         /// <summary>
         /// The main method.
@@ -25,19 +30,21 @@
         /// <param name="args">String of arguments.</param>
         public static void Main(string[] args)
         {
-            Console.WriteLine(CommandFactory.GetHelp());
             Console.WriteLine(Program.DelimeterMessage);
             Console.WriteLine("Please enter access token");
             string token = Console.ReadLine();
-            GitHubApiClient gitHubClient = GitHubApiClient.GetInstance();
-            gitHubClient.SetAccessToken(token);
-            continueRunning = true;
-            while (continueRunning)
+            Console.WriteLine(Program.DelimeterMessage);
+            Console.WriteLine(Program.StartMessage);
+            //GitHubApiClient gitHubClient = GitHubApiClient.GetInstance();
+            //gitHubClient.SetAccessToken(token);
+            ContinueRunning = true;
+            var commandFactory = new CommandFactory();
+            while (ContinueRunning)
             {
                 Console.WriteLine(Program.DelimeterMessage);
                 Console.Write(">>>");
                 string command = Console.ReadLine();
-                ProcessCommand(command);
+                ProcessCommand(command, commandFactory);
             }
         }
 
@@ -45,22 +52,10 @@
         /// Processes the command.
         /// </summary>
         /// <param name="command">The command from user.</param>
-        public static void ProcessCommand(string command)
+        /// <param name="commandFactory">The instance of CommandFactory.</param>
+        public static void ProcessCommand(string command, CommandFactory commandFactory)
         {
-            if (command == CommandFactory.EXIT)
-            {
-                Program.continueRunning = false;
-                return;
-            }
-
-            if (command == CommandFactory.GET_HELP)
-            {
-                Console.WriteLine(Program.DelimeterMessage);
-                Console.WriteLine(CommandFactory.GetHelp());
-                return;
-            }
-
-            AbstractCommand commandInstance = CommandFactory.GetCommand(command);
+            AbstractCommand commandInstance = commandFactory.GetCommand(command);
             if (commandInstance != null)
             {
                 commandInstance.GetParameters();
@@ -69,8 +64,7 @@
             }
             else
             {
-                Console.WriteLine($"Command '{command}' is invalid. Please see help.");
-                Console.WriteLine(CommandFactory.GetHelp());
+                Console.WriteLine($"Command '{command}' is invalid. Enter help to get instructions.");
             }
         }
     }

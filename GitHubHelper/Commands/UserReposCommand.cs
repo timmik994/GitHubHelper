@@ -1,6 +1,5 @@
 ﻿namespace GitHubHelper.Commands
 {
-    using System;
     using System.Collections.Generic;
     using GitHubClient;
     using GitHubClient.Model;
@@ -8,12 +7,13 @@
     /// <summary>
     /// Command, that gets repositories of specified user.
     /// </summary>
+    [Command("userepos", "Get repositories from specified user.")]
     public class UserReposCommand : AbstractCommand
     {
         /// <summary>
         /// The repositories getted from github.
         /// </summary>
-        private List<Repository> repositories;
+        //private List<Repository> repositories;
 
         /// <summary>
         /// The username.
@@ -26,12 +26,20 @@
         private string message;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="UserReposCommand" /> class.
+        /// </summary>
+        /// <param name="consoleHelper">The ConsoleHelper instance.</param>
+        /// <param name="gitHubClient">The GitHubClient instance.</param>
+        public UserReposCommand(ConsoleWorker consoleHelper) : base(consoleHelper)
+        {
+        }
+
+        /// <summary>
         /// Asks the username.
         /// </summary>
         public override void GetParameters()
         {
-            Console.WriteLine("Enter the username");
-            this.username = Console.ReadLine();
+            this.username = this.ConslWorker.AskStringParam("Enter the username");
         }
         
         /// <summary>
@@ -39,8 +47,7 @@
         /// </summary>
         public override void RunCommand()
         {
-            GitHubApiClient client = GitHubApiClient.GetInstance();
-            this.repositories = client.GetUserRepositories(this.username, out this.message);
+            //this.repositories = this.GitHubClient.GetUserRepositories(this.username, out this.message);
         }
 
         /// <summary>
@@ -48,17 +55,17 @@
         /// </summary>
         public override void ShowResult()
         {
-            if (this.repositories == null)
-            {
-                Console.WriteLine(this.message);
-            }
-            else
-            {
-                foreach (var repo in this.repositories)
-                {
-                    Console.WriteLine(repo.ToString());
-                }
-            }
+            //if (this.repositories == null)
+            //{
+            //    this.ConslWorker.WriteInConsole(this.message);
+            //}
+            //else
+            //{
+            //    foreach (var repo in this.repositories)
+            //    {
+            //        this.ConslWorker.WriteInConsole(repo.ToString());
+            //    }
+            //}
         }
     }
 }
