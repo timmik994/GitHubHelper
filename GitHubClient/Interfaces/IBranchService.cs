@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GitHubClient.Model;
-
-namespace GitHubClient.Interfaces
+﻿namespace GitHubClient.Interfaces
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using GitHubClient.Model;
+
+    /// <summary>
+    /// Service that works with branches.
+    /// </summary>
     public interface IBranchService
     {
         /// <summary>
@@ -13,13 +15,13 @@ namespace GitHubClient.Interfaces
         /// <param name="username">The name of repository owner.</param>
         /// <param name="repositoryName">The repository name.</param>
         /// <returns>ClientResponce instance with collection of branches.</returns>
-        ClientResponce<IEnumerable<Branch>> GetBranchList(string username, string repositoryName);
+        Task<ClientResponce<IEnumerable<Branch>>> GetBranchList(string username, string repositoryName);
 
         /// <summary>
         /// Gets branches list of specified repository.
         /// </summary>
         /// <param name="repositoryData">The data of repository.</param>
         /// <returns>ClientResponce instance with collection of branches.</returns>
-        ClientResponce<IEnumerable<Branch>> GetBranchList(BasicRepositoryData repositoryData);
+        Task<ClientResponce<IEnumerable<Branch>>> GetBranchList(BasicRepositoryData repositoryData);
     }
 }

@@ -37,12 +37,13 @@
         /// <returns>Instance of the Command.</returns>
         public AbstractCommand GetCommand(string command)
         {
-            Type commandType = this.commandClasses.Find(cmdClass => this.IsRightCommand(command, cmdClass));
-            ConsoleWorker consoleHelper = new ConsoleWorker();
-            GitHubApiClient gitHubClient = GitHubApiClient.GetInstance();
-            var constructorArgs = new object[] { consoleHelper, gitHubClient };
-            AbstractCommand commandInstance = Activator.CreateInstance(commandType, constructorArgs) as AbstractCommand;
-            return commandInstance;
+            //Type commandType = this.commandClasses.Find(cmdClass => this.IsRightCommand(command, cmdClass));
+            //ConsoleWorker consoleHelper = new ConsoleWorker();
+            //GitHubApiClient gitHubClient = GitHubApiClient.GetInstance();
+            //var constructorArgs = new object[] { consoleHelper, gitHubClient };
+            //AbstractCommand commandInstance = Activator.CreateInstance(commandType, constructorArgs) as AbstractCommand;
+            //return commandInstance;
+            return null;
         }
 
         /// <summary>

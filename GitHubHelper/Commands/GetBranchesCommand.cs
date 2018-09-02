@@ -41,7 +41,7 @@
         /// </summary>
         /// <param name="consoleHelper">The ConsoleHelper instance.</param>
         /// <param name="gitHubClient">The GitHubClient instance.</param>
-        public GetBranchesCommand(ConsoleWorker consoleHelper, GitHubApiClient gitHubClient) : base(consoleHelper, gitHubClient)
+        public GetBranchesCommand(ConsoleWorker consoleHelper) : base(consoleHelper)
         {
         }
 
@@ -64,15 +64,15 @@
         /// </summary>
         public override void RunCommand()
         {
-            if (this.isYourRepo)
-            {
-                this.username = this.GitHubClient.GetCurrentUser(out this.message);
-            }
+            //if (this.isYourRepo)
+            //{
+            //    this.username = this.GitHubClient.GetCurrentUser(out this.message);
+            //}
 
-            if (this.message == GitHubApiClient.SUCCESSMESSAGE)
-            {
-                this.branches = this.GitHubClient.GetBranchesList(this.username, this.repoName, out this.message);
-            }
+            //if (this.message == GitHubApiClient.SUCCESSMESSAGE)
+            //{
+            //    this.branches = this.GitHubClient.GetBranchesList(this.username, this.repoName, out this.message);
+            //}
         }
 
         /// <summary>

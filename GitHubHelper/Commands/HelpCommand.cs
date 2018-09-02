@@ -23,7 +23,7 @@
         /// </summary>
         /// <param name="consoleHelper">The ConsoleHelper instance.</param>
         /// <param name="gitHubClient">The GitHubClient instance.</param>
-        public HelpCommand(ConsoleWorker consoleHelper, GitHubApiClient gitHubClient) : base(consoleHelper, gitHubClient)
+        public HelpCommand(ConsoleWorker consoleHelper) : base(consoleHelper)
         {
         }
 

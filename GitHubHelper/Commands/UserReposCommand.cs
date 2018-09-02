@@ -13,7 +13,7 @@
         /// <summary>
         /// The repositories getted from github.
         /// </summary>
-        private List<Repository> repositories;
+        //private List<Repository> repositories;
 
         /// <summary>
         /// The username.
@@ -30,7 +30,7 @@
         /// </summary>
         /// <param name="consoleHelper">The ConsoleHelper instance.</param>
         /// <param name="gitHubClient">The GitHubClient instance.</param>
-        public UserReposCommand(ConsoleWorker consoleHelper, GitHubApiClient gitHubClient) : base(consoleHelper, gitHubClient)
+        public UserReposCommand(ConsoleWorker consoleHelper) : base(consoleHelper)
         {
         }
 
@@ -47,7 +47,7 @@
         /// </summary>
         public override void RunCommand()
         {
-            this.repositories = this.GitHubClient.GetUserRepositories(this.username, out this.message);
+            //this.repositories = this.GitHubClient.GetUserRepositories(this.username, out this.message);
         }
 
         /// <summary>
@@ -55,17 +55,17 @@
         /// </summary>
         public override void ShowResult()
         {
-            if (this.repositories == null)
-            {
-                this.ConslWorker.WriteInConsole(this.message);
-            }
-            else
-            {
-                foreach (var repo in this.repositories)
-                {
-                    this.ConslWorker.WriteInConsole(repo.ToString());
-                }
-            }
+            //if (this.repositories == null)
+            //{
+            //    this.ConslWorker.WriteInConsole(this.message);
+            //}
+            //else
+            //{
+            //    foreach (var repo in this.repositories)
+            //    {
+            //        this.ConslWorker.WriteInConsole(repo.ToString());
+            //    }
+            //}
         }
     }
 }

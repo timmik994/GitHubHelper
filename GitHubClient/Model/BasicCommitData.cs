@@ -19,10 +19,5 @@
         [JsonProperty("url")]
         public string Url { get; set; }
 
-        /// <summary>
-        /// Gets or sets the person who did the commit and data of commit.
-        /// </summary>
-        [JsonProperty("committer")]
-        public CommitAuthor Comitter { get; set; }
     }
 }

@@ -18,7 +18,7 @@
         /// </summary>
         /// <param name="consoleHelper">The ConsoleHelper instance.</param>
         /// <param name="gitHubClient">The GitHubClient instance.</param>
-        public ExitCommand(ConsoleWorker consoleHelper, GitHubApiClient gitHubClient) : base(consoleHelper, gitHubClient)
+        public ExitCommand(ConsoleWorker consoleHelper) : base(consoleHelper)
         {
         }
 

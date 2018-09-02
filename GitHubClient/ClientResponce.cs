@@ -34,5 +34,6 @@ public enum OperationStatus
     Susseess,
     Error,
     NotFound,
-    UnknownState
+    UnknownState,
+    InvalidData
 }

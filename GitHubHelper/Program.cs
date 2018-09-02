@@ -35,8 +35,8 @@
             string token = Console.ReadLine();
             Console.WriteLine(Program.DelimeterMessage);
             Console.WriteLine(Program.StartMessage);
-            GitHubApiClient gitHubClient = GitHubApiClient.GetInstance();
-            gitHubClient.SetAccessToken(token);
+            //GitHubApiClient gitHubClient = GitHubApiClient.GetInstance();
+            //gitHubClient.SetAccessToken(token);
             ContinueRunning = true;
             var commandFactory = new CommandFactory();
             while (ContinueRunning)

@@ -15,7 +15,7 @@
         /// <summary>
         /// The repositories getted from github.
         /// </summary>
-        private List<Repository> repositories;
+        //private List<Repository> repositories;
 
         /// <summary>
         /// The message from client;
@@ -27,7 +27,7 @@
         /// </summary>
         /// <param name="consoleHelper">The ConsoleHelper instance.</param>
         /// <param name="gitHubClient">The GitHubClient instance.</param>
-        public MyReposCommand(ConsoleWorker consoleHelper, GitHubApiClient gitHubClient) : base(consoleHelper, gitHubClient)
+        public MyReposCommand(ConsoleWorker consoleHelper) : base(consoleHelper)
         {
         }
 
@@ -43,7 +43,7 @@
         /// </summary>
         public override void RunCommand()
         {
-            this.repositories = this.GitHubClient.GetMyRepositories(out this.message);
+            //this.repositories = this.GitHubClient.GetMyRepositories(out this.message);
         }
 
         /// <summary>
@@ -51,18 +51,18 @@
         /// </summary>
         public override void ShowResult()
         {
-            if (this.repositories == null)
-            {
-                this.ConslWorker.WriteInConsole(this.message);
-            }
-            else
-            {
-                IEnumerable<string> reposData = this.repositories.Select(rep => rep.ToString());
-                foreach (var resp in reposData)
-                {
-                    this.ConslWorker.WriteInConsole(resp);
-                }
-            }
+            //if (this.repositories == null)
+            //{
+            //    this.ConslWorker.WriteInConsole(this.message);
+            //}
+            //else
+            //{
+            //    IEnumerable<string> reposData = this.repositories.Select(rep => rep.ToString());
+            //    foreach (var resp in reposData)
+            //    {
+            //        this.ConslWorker.WriteInConsole(resp);
+            //    }
+            //}
         }
     }
 }

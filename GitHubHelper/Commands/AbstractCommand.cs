@@ -12,21 +12,15 @@
         /// </summary>
         /// <param name="consoleHelper">The ConsoleHelper instance.</param>
         /// <param name="gitHubClient">The GitHubClient instance.</param>
-        public AbstractCommand(ConsoleWorker consoleHelper, GitHubApiClient gitHubClient)
+        public AbstractCommand(ConsoleWorker consoleHelper)
         {
             this.ConslWorker = consoleHelper;
-            this.GitHubClient = gitHubClient;
         }
 
         /// <summary>
         /// Gets or sets instance of ConsoleHelper class.
         /// </summary>
         protected ConsoleWorker ConslWorker { get; set; }
-
-        /// <summary>
-        /// Gets or sets instance of GitHubApiClient to help work with gitHub.
-        /// </summary>
-        protected GitHubApiClient GitHubClient { get; set; }
 
         /// <summary>
         /// In this methods command will ack parameters.

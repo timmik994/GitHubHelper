@@ -48,9 +48,9 @@ namespace GitHubClient.Model
         {
             StringBuilder str = new StringBuilder();
             str.AppendLine($"sha: {Sha}");
-            str.AppendLine($"date: {CommitData.Comitter.Date}");
+            str.AppendLine($"date: {CommitData.Commiter.Date}");
             str.AppendLine($"commiter: {CommitAuthor.Login}");
-            str.AppendLine($"email: {CommitData.Comitter.Email}");
+            str.AppendLine($"email: {CommitData.Commiter.Email}");
             return str.ToString();
         }
     }

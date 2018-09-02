@@ -46,7 +46,7 @@
         /// </summary>
         /// <param name="consoleHelper">The ConsoleHelper instance.</param>
         /// <param name="gitHubClient">The GitHubClient instance.</param>
-        public CommitCountCommand(ConsoleWorker consoleHelper, GitHubApiClient gitHubClient) : base(consoleHelper, gitHubClient)
+        public CommitCountCommand(ConsoleWorker consoleHelper) : base(consoleHelper)
         {
         }
 
@@ -73,30 +73,30 @@
         /// </summary>
         public override void RunCommand()
         {
-            if (this.isYourRepo)
-            {
-                this.username = this.GitHubClient.GetCurrentUser(out this.message);
-                if (this.message != GitHubApiClient.SUCCESSMESSAGE)
-                {
-                    return;
-                }
-            }
+            //if (this.isYourRepo)
+            //{
+            //    this.username = this.GitHubClient.GetCurrentUser(out this.message);
+            //    if (this.message != GitHubApiClient.SUCCESSMESSAGE)
+            //    {
+            //        return;
+            //    }
+            //}
 
-            if (!this.inAllRepos)
-            {
-                this.commitsCount = this.GetCommitCountInRepo(this.repoName, this.username);
-            }
-            else
-            {
-                List<Repository> repositories = this.GitHubClient.GetMyRepositories(out this.message);
-                if (repositories != null)
-                {
-                    foreach (var repo in repositories)
-                    {
-                        this.commitsCount += this.GetCommitCountInRepo(repo.Name, repo.Owner.Login);
-                    }
-                }
-            }
+            //if (!this.inAllRepos)
+            //{
+            //    this.commitsCount = this.GetCommitCountInRepo(this.repoName, this.username);
+            //}
+            //else
+            //{
+            //    List<Repository> repositories = this.GitHubClient.GetMyRepositories(out this.message);
+            //    if (repositories != null)
+            //    {
+            //        foreach (var repo in repositories)
+            //        {
+            //            this.commitsCount += this.GetCommitCountInRepo(repo.Name, repo.Owner.Login);
+            //        }
+            //    }
+            //}
         }
 
         /// <summary>
@@ -105,14 +105,14 @@
         /// </summary>
         public override void ShowResult()
         {
-            if (this.message == GitHubApiClient.SUCCESSMESSAGE)
-            {
-                this.ConslWorker.WriteInConsole($"Count of commits: {this.commitsCount}");
-            }
-            else
-            {
-                this.ConslWorker.WriteInConsole("The are some problems with requests.");
-            }
+            //if (this.message == GitHubApiClient.SUCCESSMESSAGE)
+            //{
+            //    this.ConslWorker.WriteInConsole($"Count of commits: {this.commitsCount}");
+            //}
+            //else
+            //{
+            //    this.ConslWorker.WriteInConsole("The are some problems with requests.");
+            //}
         }
 
         /// <summary>
@@ -123,15 +123,16 @@
         /// <returns>Count of commits in repository.</returns>
         private int GetCommitCountInRepo(string repositoryName, string ownreUsername)
         {
-            List<Commit> commits = this.GitHubClient.GetReposiroryCommits(ownreUsername, repositoryName, out this.message);
-            if (commits != null)
-            {
-                return commits.Count;
-            }
-            else
-            {
-                return 0;
-            }
+            //List<Commit> commits = this.GitHubClient.GetReposiroryCommits(ownreUsername, repositoryName, out this.message);
+            //if (commits != null)
+            //{
+            //    return commits.Count;
+            //}
+            //else
+            //{
+            //    return 0;
+            //}
+            return 0;
         }
     }
 }

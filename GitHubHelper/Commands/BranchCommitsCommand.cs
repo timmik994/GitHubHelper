@@ -50,7 +50,7 @@
         /// </summary>
         /// <param name="consoleHelper">The ConsoleHelper instance.</param>
         /// <param name="gitHubClient">The GitHubClient instance.</param>
-        public BranchCommitsCommand(ConsoleWorker consoleHelper, GitHubApiClient gitHubClient) : base(consoleHelper, gitHubClient)
+        public BranchCommitsCommand(ConsoleWorker consoleHelper) : base(consoleHelper)
         {
         }
 
@@ -59,14 +59,14 @@
         /// </summary>
         public override void GetParameters()
         {
-            this.isYourRepo = this.ConslWorker.AskBoolParam("Your repository?");
-            if (!this.isYourRepo)
-            {
-                this.username = this.ConslWorker.AskStringParam("Enter the username");
-            }
+            //this.isYourRepo = this.ConslWorker.AskBoolParam("Your repository?");
+            //if (!this.isYourRepo)
+            //{
+            //    this.username = this.ConslWorker.AskStringParam("Enter the username");
+            //}
 
-            this.repoName = this.ConslWorker.AskStringParam("Enter name of repository");
-            this.branchName = this.ConslWorker.AskStringParam("Enter the branch name");
+            //this.repoName = this.ConslWorker.AskStringParam("Enter name of repository");
+            //this.branchName = this.ConslWorker.AskStringParam("Enter the branch name");
         }
 
         /// <summary>
@@ -74,16 +74,16 @@
         /// </summary>
         public override void RunCommand()
         {
-            if (this.isYourRepo)
-            {
-                this.username = this.GitHubClient.GetCurrentUser(out this.message);
-            }
+            //if (this.isYourRepo)
+            //{
+            //    this.username = this.GitHubClient.GetCurrentUser(out this.message);
+            //}
 
-            if (this.message == GitHubApiClient.SUCCESSMESSAGE)
-            {
-                this.commits =
-                    this.GitHubClient.GetBranchCommits(this.username, this.repoName, this.branchName, out this.message);
-            }
+            //if (this.message == GitHubApiClient.SUCCESSMESSAGE)
+            //{
+            //    this.commits =
+            //        this.GitHubClient.GetBranchCommits(this.username, this.repoName, this.branchName, out this.message);
+            //}
         }
 
         /// <summary>
@@ -91,19 +91,19 @@
         /// </summary>
         public override void ShowResult()
         {
-            if (this.commits == null)
-            {
-                this.ConslWorker.WriteInConsole(this.message);
-            }
-            else
-            {
-                this.ConslWorker.WriteInConsole("commits:");
-                foreach (var item in this.commits)
-                {
-                    this.ConslWorker.WriteInConsole(BranchCommitsCommand.COMMITDELIMETER);
-                    this.ConslWorker.WriteInConsole(item.ToString());
-                }
-            }
+            //if (this.commits == null)
+            //{
+            //    this.ConslWorker.WriteInConsole(this.message);
+            //}
+            //else
+            //{
+            //    this.ConslWorker.WriteInConsole("commits:");
+            //    foreach (var item in this.commits)
+            //    {
+            //        this.ConslWorker.WriteInConsole(BranchCommitsCommand.COMMITDELIMETER);
+            //        this.ConslWorker.WriteInConsole(item.ToString());
+            //    }
+            //}
         }
     }
 }

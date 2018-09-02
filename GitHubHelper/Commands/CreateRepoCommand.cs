@@ -25,7 +25,7 @@
         /// </summary>
         /// <param name="consoleHelper">The ConsoleHelper instance.</param>
         /// <param name="gitHubClient">The GitHubClient instance.</param>
-        public CreateRepoCommand(ConsoleWorker consoleHelper, GitHubApiClient gitHubClient) : base(consoleHelper, gitHubClient)
+        public CreateRepoCommand(ConsoleWorker consoleHelper) : base(consoleHelper)
         {
         }
 
@@ -44,7 +44,7 @@
         /// </summary>
         public override void RunCommand()
         {
-            this.responce = this.GitHubClient.CreateRepository(this.repositoryData);
+            //this.responce = this.GitHubClient.CreateRepository(this.repositoryData);
         }
 
         /// <summary>
